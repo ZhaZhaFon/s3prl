@@ -142,7 +142,6 @@ class Featurizer(nn.Module):
         **kwargs,
     ):
         super().__init__()
-        self.name = "Featurizer"
 
         upstream.eval()
         paired_wavs = [torch.randn(SAMPLE_RATE).to(upstream_device)]
@@ -152,14 +151,14 @@ class Featurizer(nn.Module):
         if feature_selection not in paired_features:
             if "hidden_states" in paired_features:
                 show(
-                    f"[{self.name}] - Warning: {feature_selection} is not a supported args.upstream_feature_selection."
+                    f"[Featurizer] - Warning: {feature_selection} is not a supported args.upstream_feature_selection."
                     f" Using \"hidden_states\" as the default key.",
                     file=sys.stderr
                 )
                 feature_selection = "hidden_states"
             else:
                 show(
-                    f"[{self.name}] - Error: {feature_selection} is not a supported args.upstream_feature_selection."
+                    f"[Featurizer] - Error: {feature_selection} is not a supported args.upstream_feature_selection."
                     f" The default key \"hidden_states\" is also not supported."
                     f" Please specify -s with the following options: {list(paired_wavs.keys())}",
                     file=sys.stderr
@@ -173,7 +172,7 @@ class Featurizer(nn.Module):
         if isinstance(feature, (list, tuple)):
             self.layer_num = len(feature)
             show(
-                f"[{self.name}] - Take a list of {self.layer_num} features and weighted sum them.",
+                f"[Featurizer] - Take a list of {self.layer_num} features and weighted sum them.",
                 file=sys.stderr
             )
             self.weights = nn.Parameter(torch.zeros(self.layer_num))
@@ -185,13 +184,13 @@ class Featurizer(nn.Module):
         if hasattr(upstream, "get_downsample_rates"):
             self.downsample_rate = upstream.get_downsample_rates(feature_selection)
             show(
-                f"[{self.name}] - The selected feature {feature_selection}'s downsample rate is {self.downsample_rate}",
+                f"[Featurizer] - The selected feature {feature_selection}'s downsample rate is {self.downsample_rate}",
                 file=sys.stderr
             )
         else:
             self.downsample_rate = round(max(len(wav) for wav in paired_wavs) / feature.size(1))
             show(
-                f"[{self.name}] - Warning: The provided upstream does not give statis downsample rate"
+                f"[Featurizer] - Warning: The provided upstream does not give statis downsample rate"
                 " by the \"get_downsample_rates\" interface (see upstream/example/expert.py)."
                 " The downsample rate is calculated dynamically basing on the shape of the"
                 f" input waveforms v.s. the output features: {self.downsample_rate}",

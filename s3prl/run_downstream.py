@@ -20,6 +20,8 @@ from s3prl.utility.helper import backup, get_time_tag, hack_isinstance, is_leade
 from huggingface_hub import HfApi, HfFolder
 
 def get_downstream_args():
+
+    print('[Main] - 解析运行参数')
     parser = argparse.ArgumentParser()
 
     # train or test for this experiment
@@ -29,9 +31,7 @@ def get_downstream_args():
 
     # distributed training
     parser.add_argument('--backend', default='nccl', help='The backend for distributed training')
-    parser.add_argument('--local_rank', type=int,
-                        help=f'The GPU id this process should use while distributed training. \
-                               None when not launched by torch.distributed.launch')
+    parser.add_argument('--local_rank', type=int, help=f'The GPU id this process should use while distributed training. None when not launched by torch.distributed.launch')
 
     # use a ckpt as the experiment initialization
     # if set, all the args and config below this line will be overwrited by the ckpt
@@ -110,7 +110,7 @@ def get_downstream_args():
         else:
             ckpt_pth = args.past_exp
 
-        print(f'[Runner] - Resume from {ckpt_pth}')
+        print(f'[Main] - 加载断点: {ckpt_pth} ')
 
         # load checkpoint
         ckpt = torch.load(ckpt_pth, map_location='cpu')
@@ -135,14 +135,14 @@ def get_downstream_args():
         config = ckpt['Config']
 
     else:
-        print('[Runner] - Start a new experiment')
+        print('[Main] - 从头开始')
         os.makedirs(args.expdir, exist_ok=True)
 
         if args.config is None:
             args.config = f'./downstream/{args.downstream}/config.yaml'
         with open(args.config, 'r') as file:
             config = yaml.load(file, Loader=yaml.FullLoader)
-
+        
         if args.upstream_model_config is not None and os.path.isfile(args.upstream_model_config):
             backup_files.append(args.upstream_model_config)
 
@@ -190,6 +190,7 @@ def main():
         print(f"Logged into Hugging Face Hub with user: {hf_user}")
     
     # Save command
+    print('[Main] - 保存运行参数')
     if is_leader_process():
         with open(os.path.join(args.expdir, f'args_{get_time_tag()}.yaml'), 'w') as file:
             yaml.dump(vars(args), file)
@@ -212,9 +213,13 @@ def main():
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
 
+    print('')
+    print(f'[Main] - 启动Runner')
     runner = Runner(args, config)
     eval(f'runner.{args.mode}')()
-
+    print('')
+    print('done.')
 
 if __name__ == '__main__':
+    print('')
     main()

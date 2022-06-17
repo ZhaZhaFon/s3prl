@@ -67,7 +67,7 @@ class DevelopCommand(develop):
 
     def run(self):
         develop.run(self)
-        check_call(["pip", "install", *install_from_github])
+        #check_call(["pip", "install", *install_from_github])
 
 
 class InstallCommand(install):
@@ -75,13 +75,13 @@ class InstallCommand(install):
 
     def run(self):
         install.run(self)
-        check_call(["pip", "install", *install_from_github])
+        #check_call(["pip", "install", *install_from_github])
 
 
 class EggInfoCommand(egg_info):
     def run(self):
         egg_info.run(self)
-        check_call(["pip", "install", *install_from_github])
+        #check_call(["pip", "install", *install_from_github])
 
 
 setup(

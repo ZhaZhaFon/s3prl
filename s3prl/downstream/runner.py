@@ -91,8 +91,12 @@ class Runner():
         self.config = config
         self.init_ckpt = torch.load(self.args.init_ckpt, map_location='cpu') if self.args.init_ckpt else {}
 
+        print('[Runner] 初始化Runner')
+        print('[Runner]    >> 初始化upstream')
         self.upstream = self._get_upstream()
+        print('[Runner]    >> 初始化featurizer')
         self.featurizer = self._get_featurizer()
+        print('[Runner]    >> 初始化downstream')
         self.downstream = self._get_downstream()
         self.all_entries = [self.upstream, self.featurizer, self.downstream]
 
@@ -222,8 +226,9 @@ class Runner():
         with open(os.path.join(path, "README.md"), "w") as f:
             f.write(model_card)
 
-
+    # 训练程序
     def train(self):
+        print(f'[Runner] - 启动runner.train')
         # trainable parameters and train/eval mode
         trainable_models = []
         trainable_paras = []
@@ -247,6 +252,7 @@ class Runner():
         specaug = None
         if self.config.get('specaug'):
             from .specaug import SpecAug
+            print(f'[Runner] - 设置SpecAug')
             specaug = SpecAug(**self.config["specaug"])
 
         # progress bar
@@ -265,6 +271,7 @@ class Runner():
         records = defaultdict(list)
         epoch = self.init_ckpt.get('Epoch', 0)
         train_split = self.config['runner'].get("train_dataloader", "train")
+        print(f'[Runner] - 训练循环...')
         while pbar.n < pbar.total:
             try:
                 dataloader = self.downstream.model.get_dataloader(train_split, epoch=epoch)
@@ -393,7 +400,7 @@ class Runner():
                         all_states['WorldSize'] = get_world_size()
 
                     save_paths = [os.path.join(self.args.expdir, name) for name in save_names]
-                    tqdm.write(f'[Runner] - Save the checkpoint to:')
+                    tqdm.write(f'[Runner] - 保存断点:')
                     for i, path in enumerate(save_paths):
                         tqdm.write(f'{i + 1}. {path}')
                         torch.save(all_states, path)
