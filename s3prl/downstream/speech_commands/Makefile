@@ -13,14 +13,6 @@
 # --verbose				是否打印模型信息
 # --upstream_trainable  预训练模型是否参与参数联调
 # --upstream_layer_selection 预训练模型中参与加权求和计算特征向量的层 默认所有层都是用
-
-run:
-	cd ../.. && CUDA_VISIBLE_DEVICES=2 python run_downstream.py \
-		-n config-kws \
-		-m train \
-		-u fbank \
-		-d speech_commands \
-		-g /home/zzf/codebase/s3prl/s3prl/upstream/baseline/fbank.yaml
 		
 kws-fbank:
 	cd ../.. && CUDA_VISIBLE_DEVICES=2 python run_downstream.py \
@@ -30,6 +22,16 @@ kws-fbank:
 		--upstream fbank \
 		--downstream speech_commands \
 		--config ./downstream/speech_commands/config.yaml
+
+kws-fbank-eval:
+	cd ../.. && CUDA_VISIBLE_DEVICES=2 python run_downstream.py \
+		--expdir /home/zzf/experiment-probing/kws-fbank_dev \
+		--cache_dir /home/zzf/pretrained/s3prl/fbank \
+		--mode evaluate \
+		--upstream fbank \
+		--downstream speech_commands \
+		--config ./downstream/speech_commands/config.yaml \
+		--past_exp /home/zzf/experiment-probing/kws-fbank_dev/dev-best.ckpt \
 
 kws-wav2vec2:
 	cd ../.. && CUDA_VISIBLE_DEVICES=2 python run_downstream.py \
@@ -42,7 +44,7 @@ kws-wav2vec2:
 
 kws-wav2vec2-eval:
 	cd ../.. && CUDA_VISIBLE_DEVICES=2 python run_downstream.py \
-		--expdir /home/zzf/experiment-probing/kws-wav2vec2-artifacts_dev \
+		--expdir /home/zzf/experiment-probing/kws-wav2vec2_dev \
 		--cache_dir /home/zzf/pretrained/s3prl/wav2vec2 \
 		--mode evaluate \
 		--upstream wav2vec2 \

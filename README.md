@@ -1,3 +1,16 @@
+# s3prl
+
+[原始仓库链接](https://github.com/s3prl/s3prl), 做了一些修改方便使用, 粗体为已跑
+
+* 基于PyTorch和fairseq的语音自监督预训练工具包
+* 支持多种自监督预训练模型和多个下游任务
+
+### 改动
+* 若干Makefile
+
+---
+---
+
 <p align="center">
     <img src="./file/S3PRL-logo.png" width="900"/>
     <br>
