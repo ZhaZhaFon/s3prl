@@ -31,7 +31,7 @@ kws-fbank-eval:
 		--upstream fbank \
 		--downstream speech_commands \
 		--config ./downstream/speech_commands/config.yaml \
-		--past_exp /home/zzf/experiment-probing/kws-fbank_dev/dev-best.ckpt \
+		--past_exp /home/zzf/experiment-probing/kws-fbank_dev/dev-best.ckpt
 
 kws-wav2vec2:
 	cd ../.. && CUDA_VISIBLE_DEVICES=2 python run_downstream.py \
@@ -50,4 +50,4 @@ kws-wav2vec2-eval:
 		--upstream wav2vec2 \
 		--downstream speech_commands \
 		--config ./downstream/speech_commands/config.yaml \
-		--past_exp /home/zzf/experiment-probing/kws-wav2vec2_dev/dev-best.ckpt \
+		--past_exp /home/zzf/experiment-probing/kws-wav2vec2_dev/dev-best.ckpt
