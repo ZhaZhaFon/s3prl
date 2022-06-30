@@ -20,10 +20,12 @@ prepare:
 #ss-mel:
 
 ss-wav2vec2:
-	cd ../.. && CUDA_VISIBLE_DEVICES=2 python run_downstream.py \
+	rm -rf /home/zzf/experiment-s3prl/ss-wav2vec2
+	cd ../.. && CUDA_VISIBLE_DEVICES=0 python run_downstream.py \
 		--expdir /home/zzf/experiment-s3prl/ss-wav2vec2 \
 		--cache_dir /home/zzf/pretrained/s3prl/wav2vec2 \
 		--mode train \
+		--evaluate_split dev \
 		--upstream wav2vec2 \
 		--downstream separation_stft \
 		--config ./downstream/separation_stft/configs/cfg.yaml

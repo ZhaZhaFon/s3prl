@@ -8,6 +8,11 @@
 ### 改动
 * 若干Makefile
 
+### 跑通recipes
+* downstream/speech_commands
+* downstream/separation_stft
+* downstream/fluent_commands
+
 ---
 ---
 

@@ -26,8 +26,8 @@ downstream_expert:
     center: True
 
   loaderrc:
-    num_workers: 4
-    train_batchsize: 8
+    num_workers: 16 # 4
+    train_batchsize: 16 # 8
     eval_batchsize: 1
     train_dir: /home/zzf/dataset-s3prl/Libri2Mix/wav16k/min/train-100 # ./downstream/separation_stft/datasets/Libri2Mix/wav16k/min/train-100
     dev_dir: /home/zzf/dataset-s3prl/Libri2Mix/wav16k/min/dev # ./downstream/separation_stft/datasets/Libri2Mix/wav16k/min/dev_1000

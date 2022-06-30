@@ -1,5 +1,5 @@
 runner:
-  total_steps: 200000
+  total_steps: 200000 # TODO
   gradient_clipping: 1
   gradient_accumulate_steps: 1
 
@@ -24,7 +24,7 @@ optimizer:
 
 downstream_expert:
   datarc:
-    file_path: /groups/public/benchmark/fluent_speech_commands_dataset
+    file_path: /home/zzf/dataset/fluent_speech_commands_dataset # /groups/public/benchmark/fluent_speech_commands_dataset
     num_workers: 12
     train_batch_size: 32
     eval_batch_size: 32
