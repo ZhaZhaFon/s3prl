@@ -14,21 +14,21 @@
 # --upstream_trainable  预训练模型是否参与参数联调
 # --upstream_layer_selection 预训练模型中参与加权求和计算特征向量的层 默认所有层都是用
 
-ic_wavlm:
+pr_wavlm:
 	cd ../.. && CUDA_VISIBLE_DEVICES=0 python run_downstream.py \
-		--expdir /home/zzf/experiment-s3prl/ic_wavlm_dev \
+		--expdir /home/zzf/experiment-s3prl/pr_wavlm_dev \
 		--cache_dir /home/zzf/pretrained/s3prl/wavlm \
 		--mode train \
 		--upstream wavlm \
-		--downstream fluent_commands \
-		--config ./downstream/fluent_commands/config.yaml
+		--downstream ctc \
+		--config ./downstream/ctc/libriphone.yaml
 
-ic_wavlm-eval:
+pr_wavlm-eval:
 	cd ../.. && CUDA_VISIBLE_DEVICES=0 python run_downstream.py \
-		--expdir /home/zzf/experiment-s3prl/ic_wavlm_dev \
+		--expdir /home/zzf/experiment-s3prl/pr_wavlm_dev \
 		--cache_dir /home/zzf/pretrained/s3prl/wavlm \
 		--mode evaluate \
 		--upstream wavlm \
-		--downstream fluent_commands \
-		--config ./downstream/fluent_commands/config.yaml \
-		--past_exp /home/zzf/experiment-s3prl/ic_wavlm_dev/dev-best.ckpt
+		--downstream ctc \
+		--config ./downstream/ctc/libriphone.yaml \
+		--past_exp /home/zzf/experiment-s3prl/pr_wavlm_dev/dev-best.ckpt

@@ -14,16 +14,20 @@
 # --upstream_trainable  预训练模型是否参与参数联调
 # --upstream_layer_selection 预训练模型中参与加权求和计算特征向量的层 默认所有层都是用
 
-ic_wavlm:
+prepare: # 生成IEMOCAP_full_release/meta_data/
+	python prepare.py
+	python IEMOCAP_preprocess.py /home/zzf/dataset/IEMOCAP_full_release
+
+ser_wavlm:
 	cd ../.. && CUDA_VISIBLE_DEVICES=0 python run_downstream.py \
-		--expdir /home/zzf/experiment-s3prl/ic_wavlm_dev \
+		--expdir /home/zzf/experiment-s3prl/ser_wavlm_dev \
 		--cache_dir /home/zzf/pretrained/s3prl/wavlm \
 		--mode train \
 		--upstream wavlm \
-		--downstream fluent_commands \
-		--config ./downstream/fluent_commands/config.yaml
+		--downstream emotion \
+		--config ./downstream/emotion/config.yaml
 
-ic_wavlm-eval:
+ser_wavlm-eval:
 	cd ../.. && CUDA_VISIBLE_DEVICES=0 python run_downstream.py \
 		--expdir /home/zzf/experiment-s3prl/ic_wavlm_dev \
 		--cache_dir /home/zzf/pretrained/s3prl/wavlm \

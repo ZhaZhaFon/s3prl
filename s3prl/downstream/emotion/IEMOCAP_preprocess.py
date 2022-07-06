@@ -30,6 +30,7 @@ def preprocess(data_dirs, paths, out_path):
         label_paths = [label_path for label_path in label_paths
                        if splitext(label_path)[1] == '.txt']
         for label_path in label_paths:
+            #from IPython import embed; embed()
             with open(path_join(label_dir, label_path)) as f:
                 for line in f:
                     if line[0] != '[':

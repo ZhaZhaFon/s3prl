@@ -6,12 +6,15 @@
 * 支持多种自监督预训练模型和多个下游任务
 
 ### 改动
-* 若干Makefile
+
+* s3prl/downstream/<task>下若干Makefile
 
 ### 跑通recipes
+
 * downstream/speech_commands
 * downstream/separation_stft
 * downstream/fluent_commands
+* downstream/ctc (libriphone)
 
 ---
 ---
